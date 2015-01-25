@@ -15,6 +15,23 @@ INT _tmain(INT argc, _TCHAR *argv[])
 		if (SUCCEEDED(hr = sp.CreateInstance(__uuidof(Class1))))
 		{
 			sp->Ping();
+
+			IWTSPlugin *p = NULL;
+			if (SUCCEEDED(hr = sp->QueryInterface(IID_IWTSPlugin, (void **)&p)))
+			{
+				if (p != NULL)
+				{
+					ATLTRACE(_T("SUCCEEDED()"));
+					p->Connected();
+				}
+
+				p->Release();
+				p = NULL;
+			}
+			else
+			{
+				_tprintf(_T("IClass1Ptr::CreateInstance(): %s\n"), _com_error(hr).ErrorMessage());
+			}
 		}
 		else
 		{
